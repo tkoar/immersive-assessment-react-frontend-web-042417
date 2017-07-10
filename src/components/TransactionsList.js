@@ -1,38 +1,51 @@
 import React from 'react'
+import Transaction from './Transaction'
 
-const TransactionsList = () => {
+export default class TransactionsList extends React.Component {
 
-  return (
-    <table className="ui celled striped padded table">
-      <tbody>
-        <tr>
-          <th>
-            <h3 className="ui center aligned header">
-              Posted At
-            </h3>
-          </th>
-          <th>
-            <h3 className="ui center aligned header">
-              Description
-            </h3>
-          </th>
-          <th>
-            <h3 className="ui center aligned header">
-              Category
-            </h3>
-          </th>
-          <th>
-            <h3 className="ui center aligned header">
-              Amount
-            </h3>
-          </th>
-        </tr>
+    render() {
+      if(this.props.transactions) {
+        var filteredTransactions = []
+        var allTransactions = []
+        if (this.props.searchTerm.length > 0 && this.props.transactions) {
+          filteredTransactions = this.props.transactions.filter((el) => el.description.toLowerCase().includes(this.props.searchTerm.toLowerCase()) || el.category.toLowerCase().includes(this.props.searchTerm.toLowerCase()))
+          allTransactions = filteredTransactions.map((el, i) => <Transaction key={i} transaction={el} />)
+        } else {
+          allTransactions = this.props.transactions
+        }
 
-        {"... your code here..."}
+      return (
+        <table className="ui celled striped padded table">
+          <tbody>
+            <tr>
+              <th>
+                <h3 className="ui center aligned header">
+                  Posted At
+                </h3>
+              </th>
+              <th>
+                <h3 className="ui center aligned header">
+                  Description
+                </h3>
+              </th>
+              <th>
+                <h3 className="ui center aligned header">
+                  Category
+                </h3>
+              </th>
+              <th>
+                <h3 className="ui center aligned header">
+                  Amount
+                </h3>
+              </th>
+            </tr>
 
-      </tbody>
-    </table>
-  )
+            {allTransactions}
+
+          </tbody>
+        </table>
+      )
+    }
+
+  }
 }
-
-export default TransactionsList
